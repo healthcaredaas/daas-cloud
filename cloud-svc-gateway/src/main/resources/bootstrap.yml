@@ -1,0 +1,41 @@
+spring:
+  profiles:
+    active: "prod"
+  application:
+    name: daas-svc-gateway
+  cloud:
+    nacos:
+      username: ${NACOS_USERNAME:nacos}
+      password: ${NACOS_PASSWORD:nacos}
+      config:
+        enabled: true
+        file-extension: yaml
+        server-addr: ${NACOS_SERVER:127.0.0.1:8848}
+        namespace: ${NACOS_NAMESPACE:daas}
+        group: DEFAULT_GROUP
+      discovery:
+        enabled: true
+        server-addr: ${NACOS_SERVER:127.0.0.1:8848}
+        namespace: ${NACOS_NAMESPACE:daas}
+  config:
+    import:
+      - nacos:common-rest.yaml?refreshEnabled=true
+      - nacos:gateway-routers.yaml?refreshEnabled=true
+logging:
+  level:
+    com.alibaba.nacos: DEBUG
+    org.springframework.cloud.gateway: DEBUG
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+server:
+  port: 30000
+---
+spring:
+  config:
+    activate:
+      on-profile: prod
+server:
+  port: 80

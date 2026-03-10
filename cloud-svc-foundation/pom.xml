@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>daas-cloud</artifactId>
+        <groupId>cn.healthcaredaas</groupId>
+        <version>${revision}</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>cloud-svc-foundation</artifactId>
+    <name>DaaS : Cloud : SVC : Foundation</name>
+    <description>微服务-平台基础</description>
+
+    <dependencies>
+        <dependency>
+            <groupId>cn.healthcaredaas</groupId>
+            <artifactId>cloud-domain-foundation</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>cn.healthcaredaas</groupId>
+            <artifactId>daas-security-authorization</artifactId>
+            <version>${daas-boot.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>cn.healthcaredaas</groupId>
+            <artifactId>daas-web-rest</artifactId>
+            <version>${daas-boot.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>cn.healthcaredaas</groupId>
+            <artifactId>daas-oss-minio</artifactId>
+            <version>${daas-boot.version}</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <finalName>${project.artifactId}</finalName>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

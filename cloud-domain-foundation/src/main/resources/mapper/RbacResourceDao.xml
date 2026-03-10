@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.healthcaredaas.data.cloud.foundation.rbac.dao.RbacResourceDao">
+    <select id="findResouceRoles" resultType="java.lang.String">
+        select rr.role_code
+        from rbac_resource ra
+                 inner join rbac_role_authority rra on
+            ra.id = rra.authority_id
+                 inner join rbac_role rr on
+            rr.id = rra.role_id
+        where ra.tenant_id = #{tenantId}
+          and rr.tenant_id = #{tenantId}
+          and ra.resource_type = #{type}
+          and ra.url = #{url}
+          and ra.method = #{method}
+          and rra.authority_type = '1'
+    </select>
+    <select id="selectRoleResource" resultType="cn.healthcaredaas.data.cloud.foundation.rbac.model.RbacResource">
+        select ra.*
+        from rbac_resource ra
+                 inner join rbac_role_authority rra on
+            ra.id = rra.authority_id
+                 inner join rbac_role rr on
+            rr.id = rra.role_id
+        where ra.tenant_id = #{tenantId}
+          and rr.tenant_id = #{tenantId}
+          and rr.role_code = #{role}
+          and ra.authority_type = #{type}
+          and rra.authority_type = '1'
+    </select>
+    <select id="findUserResource" resultType="cn.healthcaredaas.data.cloud.foundation.rbac.model.RbacResource">
+        select ra.*
+        from rbac_resource ra
+                 inner join rbac_role_authority rra on
+            ra.id = rra.authority_id
+                 inner join rbac_role rr on
+            rr.id = rra.role_id
+                 inner join rbac_user_role rur on rur.user_id = rr.id
+        where ra.tenant_id = #{tenantId}
+          and rr.tenant_id = #{tenantId}
+          and rur.user_id = #{userId}
+          and ra.resource_code is not null
+          and rra.authority_type = '1'
+    </select>
+    <select id="selectUserResources" resultType="cn.healthcaredaas.data.cloud.foundation.rbac.model.RbacResource">
+        select ra.* from rbac_resource ra
+        <if test="userId!=null">
+            inner join rbac_role_authority rra on rra.authority_id = ra.id
+            inner join rbac_role rr on rr.role_id = r.id
+            inner join rbac_user_role rur on rr.id = ur.role_Id
+        </if>
+        <where>
+            ra.tenant_id = #{tenantId}
+            and ra.application_id in
+            <foreach collection="appIds" item="appId" separator="," open="(" close=")">
+                #{appId}
+            </foreach>
+            and ra.resource_type in
+            <foreach collection="types" item="type" separator="," open="(" close=")">
+                #{type}
+            </foreach>
+            <if test="userId!=null">
+                and rra.authority_type = '1'
+                and rr.tenant_id = #{tenantId}
+                and rur.user_id = #{userId}
+            </if>
+        </where>
+        order by ra.application_id, ra.parent_id,ra.order_no,ra.id
+    </select>
+</mapper>

@@ -1,0 +1,79 @@
+spring:
+  profiles:
+    active: "prod"
+  application:
+    name: daas-svc-foundation
+  datasource:
+    dynamic:
+      primary: default
+      datasource:
+        default:
+          driver-class-name: com.mysql.cj.jdbc.Driver
+          url: jdbc:mysql://${MYSQL_HOST:127.0.0.1}:${MYSQL_PORT:3306}/cloud_daas?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true
+          username: ${MYSQL_USERNAME:root}
+          password: ${MYSQL_PASSWORD:123456}
+  data:
+    redis:
+      host: ${REDIS_HOST:127.0.0.1}
+      port: ${REDIS_PORT:6379}
+      database: 0
+      password: ${REDIS_PASSWORD:}
+  cloud:
+    nacos:
+      username: ${NACOS_USERNAME:nacos}
+      password: ${NACOS_PASSWORD:nacos}
+      config:
+        enabled: true
+        file-extension: yaml
+        server-addr: ${NACOS_SERVER:127.0.0.1:8848}
+        namespace: ${NACOS_NAMESPACE:daas}
+      discovery:
+        enabled: true
+        server-addr: ${NACOS_SERVER:127.0.0.1:8848}
+        namespace: ${NACOS_NAMESPACE:daas}
+  config:
+    import:
+      - nacos:common-env.yaml?refreshEnabled=true
+      - nacos:common-rest.yaml?refreshEnabled=true
+      - nacos:db.yaml?refreshEnabled=true
+  security:
+    oauth2:
+      resource-server:
+        jwt:
+          jwk-set-uri: http://daas-svc-auth/oauth2/jwks
+  servlet:
+    multipart:
+      max-request-size: 50MB
+      max-file-size: 50MB
+springdoc:
+  group-configs:
+    - group: 'default'
+      paths-to-match: '/**'
+      packages-to-scan: cn.healthcaredaas.data.cloud
+  default-flat-param-object: true
+
+daas:
+  minio:
+    enabled: true
+    endpoint: ${MINIO_SERVER:http://127.0.0.1:9000}
+    accessKey: ${MINIO_ACCESSKEY:minioadmin}
+    secretKey: ${MINIO_SECRETKEY:minioadmin}
+    bucket: daas
+    defaultPath: data
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+server:
+  port: 30002
+daas:
+  security:
+    accessCheck: false
+---
+spring:
+  config:
+    activate:
+      on-profile: prod
+server:
+  port: 80

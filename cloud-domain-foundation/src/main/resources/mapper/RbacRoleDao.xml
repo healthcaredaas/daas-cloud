@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.healthcaredaas.data.cloud.foundation.rbac.dao.RbacRoleDao">
+    <select id="selectUserRole" resultType="cn.healthcaredaas.data.cloud.foundation.rbac.model.RbacRole">
+        select r.*
+        from rbac_role r
+                 left join rbac_user_role ur on r.id = ur.role_Id
+        where ur.user_id = #{userId}
+    </select>
+</mapper>

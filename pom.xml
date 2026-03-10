@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>daas-dependencies</artifactId>
+        <groupId>cn.healthcaredaas</groupId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>daas-cloud</artifactId>
+    <version>${revision}</version>
+
+    <modules>
+        <module>cloud-domain-foundation</module>
+        <module>cloud-svc-gateway</module>
+        <module>cloud-svc-foundation</module>
+        <module>cloud-svc-auth</module>
+    </modules>
+    <packaging>pom</packaging>
+
+    <name>DaaS : Cloud</name>
+    <description>DaaS Cloud Base Service</description>
+
+    <properties>
+        <daas-boot.version>0.0.1-SNAPSHOT</daas-boot.version>
+        <revision>0.0.1</revision>
+    </properties>
+
+    <repositories>
+
+        <repository>
+            <id>aliyun</id>
+            <name>aliyun</name>
+            <url>https://maven.aliyun.com/repository/public/</url>
+        </repository>
+    </repositories>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+    </dependencies>
+
+</project>
